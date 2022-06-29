@@ -77,5 +77,5 @@
     "jest": "^28.1.1",
     "prettier": "^2.6.2"
   },
-  "proxy": "https://who-i-am-vsierhieiev2.herokuapp.com"
+  "proxy": "http://localhost:8080"
 }
