@@ -31,6 +31,9 @@ const RESTORE = '/restore';
 const NEW_PASSWORD = '/new-password';
 const PROFILE = '/profile';
 
+const WINNER = 'WINNER';
+const LOOSER = 'LOSER';
+
 const THEME_FILTER = [
   { title: 'Actors', checked: false },
   { title: 'Astronauts', checked: false },
@@ -84,4 +87,6 @@ export {
   RESTORE,
   NEW_PASSWORD,
   PROFILE,
+  WINNER,
+  LOOSER,
 };

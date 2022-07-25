@@ -5,38 +5,35 @@ import SelectCharacterModal from '../../components/modals/select-character';
 import Header from '../../components/header/header';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
 import Spinner from '@atlaskit/spinner';
-import { useContext, useState } from 'react';
-import { READY } from '../../constants/constants';
+import { useCallback, useContext, useState } from 'react';
 import './lobby.scss';
 import GameDataContext from '../../contexts/game-data-context';
 import { suggestCharacter } from '../../services/games-service';
 import useGameData from '../../hooks/useGameData';
 import usePlayers from '../../hooks/usePlayers';
+import { NOT_READY, READY } from '../../constants/constants';
 
 function Lobby() {
-  const { gameData, playerId } = useContext(GameDataContext);
+  const { gameData, playerId, fetchGame } = useContext(GameDataContext);
   const [leaveModalActive, setLeaveModalActive] = useState(false);
   const [suggestModalActive, setSuggestModalActive] = useState(false);
-  const [suggestBtn, setSuggestBtn] = useState(true);
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent } = usePlayers();
 
-  const submitCharacter = async (event, playerName, characterName) => {
-    event.preventDefault();
-    try {
+  const submitCharacter = useCallback(
+    async (playerName, characterName) => {
       await suggestCharacter(
         playerId,
         gameData.id,
         playerName.trim(),
         characterName.trim()
       );
+      await fetchGame();
       setSuggestModalActive(false);
-      setSuggestBtn(false);
-    } catch (error) {
-      //to do: handle errors
-    }
-  };
+    },
+    [playerId, gameData.id, fetchGame]
+  );
 
   return (
     <ScreenWrapper>
@@ -46,29 +43,27 @@ function Lobby() {
             <Header type="game-lobby" />
             <div className="input-screen__player">
               <div className="input-screen__player-card-wrapper">
-                {currentPlayer && (
-                  <PlayerCard
-                    avatarClassName={currentPlayer.avatar}
-                    name={currentPlayer.nickname}
-                    playerStatusClassName={
-                      currentPlayer.state === READY ? 'yes' : 'unsure'
-                    }
-                    isYou
-                  />
-                )}
+                <PlayerCard
+                  avatarClassName={currentPlayer.avatar}
+                  name={currentPlayer.name}
+                  playerStatusClassName={
+                    currentPlayer.playerState === READY ? 'yes' : 'unsure'
+                  }
+                  isYou
+                />
                 {playersWithoutCurrent.map((player) => (
                   <PlayerCard
-                    key={player.player.id}
+                    key={player.id}
                     avatarClassName={player.avatar}
-                    name={player.nickname}
+                    name={player.name}
                     playerStatusClassName={
-                      player.state === READY ? 'yes' : 'unsure'
+                      player.playerState === READY ? 'yes' : 'unsure'
                     }
                   />
                 ))}
               </div>
               <div className="input-screen__btn-wrapper">
-                {suggestBtn && currentPlayer && (
+                {currentPlayer.playerState === NOT_READY && (
                   <Btn
                     className={['btn-green-solid']}
                     onClick={() => setSuggestModalActive(true)}
@@ -98,7 +93,7 @@ function Lobby() {
         />
         {currentPlayer && (
           <SelectCharacterModal
-            player={currentPlayer.nickname}
+            player={currentPlayer.name}
             active={suggestModalActive}
             onSubmit={submitCharacter}
             onCancel={() => setSuggestModalActive(false)}
