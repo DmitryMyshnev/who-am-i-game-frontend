@@ -6,6 +6,16 @@ import useAuth from '../../hooks/useAuth';
 import { useState } from 'react';
 import LogoutModal from '../../components/modals/logout';
 
+function getNameFirstLetters(username) {
+  const split = username.split(' ');
+
+  if (split.length < 2) {
+    return username[0];
+  }
+
+  return `${split[0][0]}${split[1][0]}`;
+}
+
 function AfterLogin() {
   const navigate = useNavigate();
   const authCtx = useAuth();
@@ -16,7 +26,9 @@ function AfterLogin() {
       <div className="profile">
         <div className="profile__title">welcome</div>
         <div className="profile__body">
-          <div className="profile__avatar"></div>
+          <div className="profile__avatar">
+            {getNameFirstLetters(authCtx.username)}
+          </div>
           <div className="profile__name">{authCtx.username}</div>
           <div className="profile__edit-icon"></div>
         </div>

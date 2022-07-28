@@ -25,7 +25,7 @@ export default function ChangeUsernameModal({
         authCtx.changeUserName(input);
         onSubmitProp();
       } catch (error) {
-        if (error.response.data.details.length) {
+        if (error.response.data.details?.length) {
           setError(error.response.data.details[0]);
         }
       }
