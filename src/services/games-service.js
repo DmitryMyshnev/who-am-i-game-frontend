@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../lib/axios';
 
 async function findGameById(player, id) {
   return axios({

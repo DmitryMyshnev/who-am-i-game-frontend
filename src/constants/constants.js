@@ -31,6 +31,7 @@ const RESTORE = '/restore';
 const NEW_PASSWORD = '/new-password';
 const PROFILE = '/profile';
 const REDIRECT = '/email-redirect';
+const CONFIRM_ACCOUNT = '/confirm-account';
 
 const WINNER = 'WINNER';
 const LOOSER = 'LOSER';
@@ -91,4 +92,5 @@ export {
   WINNER,
   LOOSER,
   REDIRECT,
+  CONFIRM_ACCOUNT,
 };

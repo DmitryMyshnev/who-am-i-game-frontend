@@ -5,6 +5,14 @@
   align-items: center;
   width: 592px;
   gap: 24px;
+
+  &__username {
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 39px;
+    text-transform: uppercase;
+    margin: 0;
+  }
 }
 
 .profile__avatar {

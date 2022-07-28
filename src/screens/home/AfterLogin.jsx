@@ -3,13 +3,19 @@ import { MAIN_LOBBY, PROFILE } from '../../constants/constants';
 import { useNavigate } from 'react-router-dom';
 import PlayQuickGameButton from './PlayQuickGameButton';
 import useAuth from '../../hooks/useAuth';
+import { logout } from '../../services/users-service';
 
 function AfterLogin() {
   const navigate = useNavigate();
   const authCtx = useAuth();
 
-  const logoutHandler = () => {
-    authCtx.logout();
+  const logoutHandler = async () => {
+    try {
+      await logout();
+      authCtx.logout();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -18,7 +24,7 @@ function AfterLogin() {
         <div className="profile__title">welcome</div>
         <div className="profile__body">
           <div className="profile__avatar"></div>
-          <div className="profile__name">GreenDean</div>
+          <div className="profile__name">{authCtx.username}</div>
           <div className="profile__edit-icon"></div>
         </div>
       </div>

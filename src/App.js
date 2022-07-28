@@ -29,6 +29,7 @@ import {
   WINNER,
   LOOSER,
   REDIRECT,
+  CONFIRM_ACCOUNT,
 } from './constants/constants';
 import CreateAccount from './screens/create-account/create-account';
 import SignIn from './screens/signin-page/signin-page';
@@ -43,6 +44,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import keyBy from 'lodash/keyBy';
 import EmailRedirect from './screens/email-redirect/email-redirect';
+import ConfirmAccount from './screens/confirm-account/confirm-account';
 
 const initialData = { status: null, players: [], winners: [], playersById: {} };
 
@@ -138,6 +140,7 @@ function App() {
             <Route path={NEW_PASSWORD} element={<NewPassword />} />
             <Route path={REDIRECT} element={<EmailRedirect />} />
             <Route path={PROFILE} element={<ProfilePage />} />
+            <Route path={CONFIRM_ACCOUNT} element={<ConfirmAccount />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </GameDataContext.Provider>

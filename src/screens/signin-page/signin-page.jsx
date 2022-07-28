@@ -15,6 +15,8 @@ function SignIn() {
   const authCtx = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const emailHandler = (e) => {
     setEmail(e.target.value);
@@ -26,14 +28,18 @@ function SignIn() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
     try {
       const response = await authorisationUser(email, password);
-      authCtx.login(response.data.idToken);
-      authCtx.changeUserName(response.data.userName);
+      authCtx.login(response.data);
       navigate('/');
     } catch (error) {
-      alert(error);
+      if (error.response.data.details) {
+        setError(error.response.data.details);
+      }
     }
+    setLoading(false);
   };
 
   const formIsValid =
@@ -42,6 +48,7 @@ function SignIn() {
   return (
     <ScreenWrapper>
       <GameTitle />
+      {error && <p className="form-error">{error}</p>}
       <form className="form-wrapper" onSubmit={submitHandler}>
         <Input
           type="email"
@@ -65,7 +72,7 @@ function SignIn() {
           >
             Cancel
           </Btn>
-          <Btn disabled={!formIsValid} type="submit">
+          <Btn disabled={loading || !formIsValid} type="submit">
             sign in
           </Btn>
         </div>

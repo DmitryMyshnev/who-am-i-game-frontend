@@ -11,6 +11,7 @@ import { sendEmail } from '../../services/users-service';
 function RestorePassword() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const emailHandler = (e) => {
     setEmail(e.target.value);
@@ -20,12 +21,14 @@ function RestorePassword() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await sendEmail(email);
       navigate(REDIRECT);
     } catch (error) {
       alert(error);
     }
+    setLoading(false);
   };
 
   return (
@@ -49,7 +52,7 @@ function RestorePassword() {
           >
             Cancel
           </Btn>
-          <Btn disabled={!formIsValid} type="submit">
+          <Btn disabled={loading || !formIsValid} type="submit">
             sign in
           </Btn>
         </div>

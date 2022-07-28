@@ -79,7 +79,6 @@ function UsersContainer({ currentPlayer, players, playerTurn }) {
           name={currentPlayer.name}
           assignedCharacter="This is you"
           active={currentPlayer.id === playerTurn?.id}
-          playerStatusClassName={currentPlayer.character ? 'yes' : null}
         />
       )}
       <hr />
@@ -93,7 +92,6 @@ function UsersContainer({ currentPlayer, players, playerTurn }) {
                 avatarClassName={player.avatar}
                 assignedCharacter={player.character}
                 active={player.id === playerTurn?.id}
-                playerStatusClassName={currentPlayer.character ? 'yes' : null}
               />
             ))
           : null}
