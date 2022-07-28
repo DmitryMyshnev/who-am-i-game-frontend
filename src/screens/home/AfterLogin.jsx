@@ -3,20 +3,13 @@ import { MAIN_LOBBY, PROFILE } from '../../constants/constants';
 import { useNavigate } from 'react-router-dom';
 import PlayQuickGameButton from './PlayQuickGameButton';
 import useAuth from '../../hooks/useAuth';
-import { logout } from '../../services/users-service';
+import { useState } from 'react';
+import LogoutModal from '../../components/modals/logout';
 
 function AfterLogin() {
   const navigate = useNavigate();
   const authCtx = useAuth();
-
-  const logoutHandler = async () => {
-    try {
-      await logout();
-      authCtx.logout();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [logoutModalActive, setLogoutModalActive] = useState(false);
 
   return (
     <div className="after-login-wrapper">
@@ -45,9 +38,16 @@ function AfterLogin() {
       >
         profile
       </Btn>
-      <Btn className={'btn-pink-outline'} onClick={logoutHandler}>
+      <Btn
+        className={'btn-pink-outline'}
+        onClick={() => setLogoutModalActive(true)}
+      >
         log out
       </Btn>
+      <LogoutModal
+        active={logoutModalActive}
+        onCancel={() => setLogoutModalActive(false)}
+      />
     </div>
   );
 }
